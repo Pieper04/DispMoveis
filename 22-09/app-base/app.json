@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "app-base",
+    "slug": "app-base",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.pieperj04.appbase"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "725d0b6d-2f17-4add-811b-5ffbde332278"
+      }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permitir $(PRODUCT_NAME) a usar sua localização."
+        }
+      ],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Permitir $(PRODUCT_NAME) acessar seus contatos"
+        }
+      ]
+    ]
+  }
+}
