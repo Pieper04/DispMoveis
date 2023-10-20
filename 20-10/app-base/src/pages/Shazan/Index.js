@@ -1,15 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 /* Adicionar */
-import { Platform, Text, View, StyleSheet, SafeAreaView, TouchableHighlight, Box } from 'react-native';
+import { Platform, Text, View, StyleSheet, SafeAreaView, TouchableHighlight, Button, TextInput } from 'react-native';
+import * as Speech from 'expo-speech';
+import axios from 'axios';
 
+export default function EShazan({ navigation, navigation: { goBack } }) {
+    const [Texto, setTexto] = useState("Se você andar parado, parado você está.");
+    const [Retorno, setRetorno] = useState(null);
+    const speak = () => {
+        console.log(Retorno)
+        const thingToSay = Retorno;
+        Speech.speak(thingToSay);
+    };
 
-export default function Home({ navigation, navigation: { goBack } }) {
+    async function Translate () {
+        if (Texto) {
 
-  useEffect(() => {
+          await axios.post('https://api.funtranslations.com/translate/yoda.json?text='+Texto, Texto, {
+            headers: { 'Content-Type': 'application/json' }
+            })
+          .then((response) => {
+            try {
+              //console.log(response.data)
+              setRetorno(response.data.contents.translated);
 
-  }, []);
+              speak()
+            } catch (e) {
+                console.log(e)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        }    
+      }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,61 +53,26 @@ export default function Home({ navigation, navigation: { goBack } }) {
         </View> 
 
         <View style={styles.container}>
-          <View style={{ marginTop: 5 }}> 
-            <TouchableOpacity onPress={(e) => Location()}>
-              <View style={styles.BotaoPadrao}>
-                <Text style={styles.BotaoPadraoTexto}>Location</Text> 
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ marginTop: 5 }}> 
-            <TouchableOpacity onPress={(e) => Camera()}>
-              <View style={styles.BotaoPadrao}>
-                <Text style={styles.BotaoPadraoTexto}>Camera</Text> 
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ marginTop: 5 }}> 
-            <TouchableOpacity onPress={(e) => Contatos()}>
-              <View style={styles.BotaoPadrao}>
-                <Text style={styles.BotaoPadraoTexto}>Contatos</Text> 
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ marginTop: 5 }}> 
-            <TouchableOpacity onPress={(e) => ManImages()}>
-              <View style={styles.BotaoPadrao}>
-                <Text style={styles.BotaoPadraoTexto}>Manipulação de imagens</Text> 
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ marginTop: 5 }}> 
-            <TouchableOpacity onPress={(e) => ESMS()}>
-              <View style={styles.BotaoPadrao}>
-                <Text style={styles.BotaoPadraoTexto}>SMS</Text> 
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ marginTop: 5 }}> 
-            <TouchableOpacity onPress={(e) => speech()}>
-              <View style={styles.BotaoPadrao}>
-                <Text style={styles.BotaoPadraoTexto}>speech</Text> 
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ marginTop: 5 }}> 
-            <TouchableOpacity onPress={(e) => Uau()}>
-              <View style={styles.BotaoPadrao}>
-                <Text style={styles.BotaoPadraoTexto}>Uau</Text> 
-              </View>
-            </TouchableOpacity>
-          </View>
+            <View style={{ paddingVertical: 10 }}> 
+                <View>
+                    <Text style={styles.LabelPadrao}>Digite o texto para o mestre yoda</Text>
+                    <TextInput
+                        placeholder=''
+                        style={styles.InputPadrao}
+                        onChangeText={(e) => setTexto(e)}
+                        value={Texto ? Texto : ""}
+                        name="Texto"
+                        autoCorrect={true}
+                        required 
+                    />
+                </View>
+                <View>
+                    <Text>
+                        {Retorno}
+                    </Text>
+                </View>
+                <Button style={{ marginTop: 10 }} title="Pressione para ouvir algumas palavras" onPress={Translate} />
+            </View>
         </View>
 
         <View style={styles.footer}>
@@ -97,39 +87,12 @@ export default function Home({ navigation, navigation: { goBack } }) {
       </SafeAreaView>
   );
 
-  async function Location () {
-    navigation.navigate('Location');
-  }
-
-
-  async function Camera () {
-    navigation.navigate('Camera');
-  }
-
-  async function Contatos () {
-    navigation.navigate('Contatos');
-  }
-
-  async function ManImages () {
-    navigation.navigate('ManImages');
-  }
-
-  async function ESMS () {
-    navigation.navigate('ESMS');
-  }
-
-  async function speech () {
-    navigation.navigate('speech');
-  }
-
-  async function Uau () {
-    navigation.navigate('Shazan');
-  }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: "#fff"
     },
     ViewInicial: {
       paddingVertical: 0,
@@ -231,4 +194,13 @@ const styles = StyleSheet.create({
       color: "#0c7dbe",
       fontSize: 16
     },
+    InputPadrao: {
+        backgroundColor: "transparent",
+        color: "#3493e5",
+        borderWidth: 1,
+        borderColor: "#3493e5",
+        borderRadius: 5,
+        margin: 5,
+        padding: 10
+      },
 });

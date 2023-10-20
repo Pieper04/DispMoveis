@@ -9,6 +9,7 @@ import Contatos from './src/pages/Contatos/Index';
 import ManImages from './src/pages/ManImages/Index';
 import ESMS from './src/pages/ESMS/Index';
 import speech from './src/pages/Speech/Index';
+import Shazan from './src/pages/Shazan/Index';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
         <Stack.Screen name="ManImages" component={ManImages}/>
         <Stack.Screen name="ESMS" component={ESMS}/>
         <Stack.Screen name="speech" component={speech}/> 
+        <Stack.Screen name="Shazan" component={Shazan}/> 
       </Stack.Navigator>
     </NavigationContainer>
   );
